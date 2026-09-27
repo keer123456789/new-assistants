@@ -55,48 +55,16 @@ jobs:
         run: |
           echo "=== Python version ==="
           python --version
-          echo "=== Working directory ==="
+          echo "=== Working dir ==="
           pwd
           ls -la
-          echo "=== Check config.yaml ==="
-          if [ -f "config.yaml" ]; then
-            echo "✅ config.yaml exists"
-            cat config.yaml
-          else
-            echo "❌ config.yaml MISSING"
-          fi
-          echo "=== Check .github/workflows ==="
-          ls -la .github/workflows/ || echo "missing"
-          echo "=== Test imports ==="
-          python -c "
-import sys
-sys.path.insert(0, '.')
-try:
-    from src.config import Config
-    print('OK: src.config')
-except Exception as e:
-    print('FAIL: src.config:', e)
-try:
-    from src.fetcher.sources import SOURCES
-    print(f'OK: src.fetcher.sources ({len(SOURCES)} sources)')
-except Exception as e:
-    print('FAIL: src.fetcher.sources:', e)
-try:
-    from src.processor.llm import LLMProcessor
-    print('OK: src.processor.llm')
-except Exception as e:
-    print('FAIL: src.processor.llm:', e)
-try:
-    from src.storage import MarkdownReport, HTMLReport
-    print('OK: src.storage')
-except Exception as e:
-    print('FAIL: src.storage:', e)
-try:
-    from src.pusher import TelegramPusher
-    print('OK: src.pusher')
-except Exception as e:
-    print('FAIL: src.pusher:', e)
-"
+          echo "=== config.yaml ==="
+          test -f config.yaml && echo "OK config.yaml exists" || echo "MISSING config.yaml"
+          echo "=== Import test ==="
+          python -c "import sys; sys.path.insert(0, '.'); from src.config import Config; print('OK src.config')"
+          python -c "import sys; sys.path.insert(0, '.'); from src.fetcher.sources import SOURCES; print('OK sources:', len(SOURCES))"
+          python -c "import sys; sys.path.insert(0, '.'); from src.storage import MarkdownReport, HTMLReport; print('OK storage')"
+          python -c "import sys; sys.path.insert(0, '.'); from src.pusher import TelegramPusher; print('OK pusher')"
           echo "=== End diagnostic ==="
 
       - name: Run news assistant
