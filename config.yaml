@@ -1,0 +1,37 @@
+# 代理设置
+proxy:
+  enabled: true
+  url: "http://127.0.0.1:7897"
+
+# 抓取设置
+fetch:
+  max_items_per_source: 10
+  hours_back: 30
+  timeout: 30
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 NewsAssistant/1.0"
+
+# LLM 设置
+llm:
+  model: "gpt-4o-mini"
+  temperature: 0.2
+  max_concurrent: 5
+  batch_size: 10
+
+# 推送设置
+push:
+  channels:
+    - telegram
+  split_long_message: true
+
+# 报告设置
+report:
+  categories_order:
+    - 国际
+    - 政治
+    - 经济
+    - 金融
+    - 科技
+    - 社会
+    - 环境
+    - 其他
+  min_sources_for_verification: 2
