@@ -89,8 +89,11 @@ def run_pipeline(config_path: str = "config.yaml",
     log.info("总共抓取 %d 条", len(all_items))
 
     if not all_items:
-        log.warning("没有抓到任何新闻，退出")
-        return
+        log.error("没有抓到任何新闻！可能原因：")
+        log.error("  1. 网络问题（代理未配置或 VPN 未开）")
+        log.error("  2. 所有 RSS 源都失效")
+        log.error("  3. GitHub Actions 上跑时不需要代理，检查 config.yaml 的 proxy.enabled 是否为 false")
+        sys.exit(1)
 
     step("[*] 去重")
     deduped = Deduplicator().dedupe(all_items)
@@ -98,8 +101,10 @@ def run_pipeline(config_path: str = "config.yaml",
 
     step("[*] LLM 处理（分类/翻译/摘要）")
     if not cfg.llm.api_key:
-        log.error("LLM_API_KEY 未配置！请在 .env 中设置")
-        return
+        log.error("LLM_API_KEY 未配置！")
+        log.error("本地运行：请在 .env 文件中填入 LLM_API_KEY")
+        log.error("GitHub Actions：请去 Settings → Secrets → Actions 添加 LLM_API_KEY")
+        sys.exit(1)
 
     llm = LLMProcessor(
         api_key=cfg.llm.api_key,

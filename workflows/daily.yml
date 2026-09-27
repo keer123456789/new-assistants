@@ -16,7 +16,6 @@ permissions:
   pages: write
   id-token: write
 
-# 防止并发运行
 concurrency:
   group: news-assistant
   cancel-in-progress: false
@@ -43,6 +42,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Check secrets
+        run: |
+          if [ -z "${{ secrets.LLM_API_KEY }}" ]; then
+            echo "❌ LLM_API_KEY 未配置！"
+            echo "请去 Settings → Secrets and variables → Actions 添加 LLM_API_KEY"
+            exit 1
+          fi
+          echo "✅ LLM_API_KEY 已配置"
+
       - name: Run news assistant
         env:
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
@@ -65,27 +73,43 @@ jobs:
             python scripts/run_daily.py
           fi
 
+      - name: Verify output exists
+        run: |
+          if [ ! -d "output" ] || [ -z "$(ls -A output 2>/dev/null)" ]; then
+            echo "❌ output 目录为空！"
+            echo "脚本可能没有生成任何报告"
+            exit 1
+          fi
+          echo "✅ output 目录内容："
+          ls -la output/
+
       - name: Setup Pages
+        if: success()
         uses: actions/configure-pages@v4
 
       - name: Build Pages artifact
         run: |
           mkdir -p _site
-          cp -r output/* _site/
-          # 验证
+          cp -v output/* _site/
+          echo "✅ Files copied to _site:"
           ls -la _site/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
-        with:
-          artifact_name: news-assistant-pages
 
       - name: Commit reports back to repo (backup)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add output/
-          git commit -m "chore: update daily news report ${{ env.DATE }}" || echo "No changes to commit"
-          git push
-        env:
-          DATE: $(date +%Y-%m-%d)
+          git add -f output/ || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update daily news report $(date +%Y-%m-%d)"
+            git push
+          fi
