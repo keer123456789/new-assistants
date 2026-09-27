@@ -20,9 +20,16 @@ class ProxyConfig:
     url: str = ""
 
     def effective_url(self) -> Optional[str]:
+        # GitHub Actions 上没有本地代理，自动禁用
+        if os.environ.get("GITHUB_ACTIONS") == "true":
+            return None
+        # 优先使用环境变量（.env 的 PROXY_URL）
+        env_proxy = os.environ.get("PROXY_URL", "")
+        if env_proxy:
+            return env_proxy
         if not self.enabled:
             return None
-        return self.url or os.environ.get("PROXY_URL", "")
+        return self.url or None
 
 
 @dataclass

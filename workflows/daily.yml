@@ -51,6 +51,54 @@ jobs:
           fi
           echo "✅ LLM_API_KEY 已配置"
 
+      - name: Diagnostic check
+        run: |
+          echo "=== Python version ==="
+          python --version
+          echo "=== Working directory ==="
+          pwd
+          ls -la
+          echo "=== Check config.yaml ==="
+          if [ -f "config.yaml" ]; then
+            echo "✅ config.yaml exists"
+            cat config.yaml
+          else
+            echo "❌ config.yaml MISSING"
+          fi
+          echo "=== Check .github/workflows ==="
+          ls -la .github/workflows/ || echo "missing"
+          echo "=== Test imports ==="
+          python -c "
+import sys
+sys.path.insert(0, '.')
+try:
+    from src.config import Config
+    print('OK: src.config')
+except Exception as e:
+    print('FAIL: src.config:', e)
+try:
+    from src.fetcher.sources import SOURCES
+    print(f'OK: src.fetcher.sources ({len(SOURCES)} sources)')
+except Exception as e:
+    print('FAIL: src.fetcher.sources:', e)
+try:
+    from src.processor.llm import LLMProcessor
+    print('OK: src.processor.llm')
+except Exception as e:
+    print('FAIL: src.processor.llm:', e)
+try:
+    from src.storage import MarkdownReport, HTMLReport
+    print('OK: src.storage')
+except Exception as e:
+    print('FAIL: src.storage:', e)
+try:
+    from src.pusher import TelegramPusher
+    print('OK: src.pusher')
+except Exception as e:
+    print('FAIL: src.pusher:', e)
+"
+          echo "=== End diagnostic ==="
+
       - name: Run news assistant
         env:
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
@@ -68,9 +116,9 @@ jobs:
           SERVERCHAN_KEY: ${{ secrets.SERVERCHAN_KEY }}
         run: |
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
-            python scripts/run_daily.py --dry-run --skip-push
+            python -u scripts/run_daily.py --dry-run --skip-push 2>&1
           else
-            python scripts/run_daily.py
+            python -u scripts/run_daily.py 2>&1
           fi
 
       - name: Verify output exists
