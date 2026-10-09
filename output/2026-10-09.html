@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0071e3">
+<title>国际新闻日报 — 2026-10-09</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #f5f5f7; --card: #ffffff; --text: #1d1d1f; --muted: #6e6e73;
+  --border: #e5e5ea; --accent: #0071e3; --link: #0071e3;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #000000; --card: #1c1c1e; --text: #f5f5f7; --muted: #98989d;
+    --border: #38383a; --accent: #0a84ff; --link: #64d2ff;
+  }
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+               "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: var(--bg); color: var(--text); line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.container { max-width: 720px; margin: 0 auto; padding: 16px; }
+.header {
+  position: sticky; top: 0; background: var(--bg); padding: 16px 0;
+  border-bottom: 1px solid var(--border); z-index: 10;
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+}
+.header h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+.header .meta { font-size: 13px; color: var(--muted); }
+.stats {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;
+  margin: 16px 0;
+}
+.stat-card {
+  background: var(--card); padding: 12px; border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.stat-card .num { font-size: 24px; font-weight: 700; color: var(--accent); }
+.stat-card .label { font-size: 12px; color: var(--muted); }
+
+.section-title {
+  font-size: 18px; font-weight: 700; margin: 24px 0 12px;
+  padding-left: 8px; border-left: 4px solid var(--accent);
+}
+
+.event {
+  background: var(--card); border-radius: 16px; padding: 16px;
+  margin-bottom: 12px; border: 1px solid var(--border);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+.event.verified { border-left: 4px solid #34c759; }
+.event.single { border-left: 4px solid var(--muted); }
+.event.importance-high { border-left-color: #ff3b30; }
+
+.event h3 {
+  font-size: 17px; font-weight: 600; margin-bottom: 8px;
+  line-height: 1.4;
+}
+.event .badges {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px;
+  font-size: 12px;
+}
+.badge {
+  display: inline-block; padding: 2px 8px; border-radius: 8px;
+  background: var(--border); color: var(--muted);
+}
+.badge.cat-国际 { background: #e3f2fd; color: #1565c0; }
+.badge.cat-政治 { background: #fce4ec; color: #c2185b; }
+.badge.cat-经济 { background: #fff3e0; color: #e65100; }
+.badge.cat-金融 { background: #e8f5e9; color: #2e7d32; }
+.badge.cat-科技 { background: #ede7f6; color: #4527a0; }
+.badge.cat-社会 { background: #fff8e1; color: #f57f17; }
+.badge.cat-环境 { background: #e0f2f1; color: #00695c; }
+.badge.verified { background: #e8f5e9; color: #2e7d32; }
+.badge.single { background: #f5f5f5; color: #6e6e73; }
+.badge.imp-high { background: #ffebee; color: #c62828; }
+
+@media (prefers-color-scheme: dark) {
+  .badge.cat-国际 { background: #1a3a5c; color: #90caf9; }
+  .badge.cat-政治 { background: #5c1a3a; color: #f48fb1; }
+  .badge.cat-经济 { background: #5c3a1a; color: #ffb74d; }
+  .badge.cat-金融 { background: #1a5c2e; color: #81c784; }
+  .badge.cat-科技 { background: #3a1a5c; color: #b39ddb; }
+  .badge.cat-社会 { background: #5c4a1a; color: #ffd54f; }
+  .badge.cat-环境 { background: #1a5c52; color: #4db6ac; }
+  .badge.verified { background: #1a3a1a; color: #81c784; }
+  .badge.single { background: #2c2c2e; color: #98989d; }
+  .badge.imp-high { background: #3a1a1a; color: #ef9a9a; }
+}
+
+.event .core {
+  background: var(--bg); padding: 10px 12px; border-radius: 8px;
+  margin: 10px 0; font-size: 14px; font-weight: 500;
+}
+.event .summary { font-size: 14px; margin: 10px 0; color: var(--text); }
+.event .consensus, .event .divergence {
+  font-size: 13px; margin: 6px 0; padding: 8px 10px; border-radius: 6px;
+}
+.event .consensus { background: rgba(52, 199, 89, 0.1); }
+.event .divergence { background: rgba(255, 149, 0, 0.1); }
+.event .consensus::before { content: "✅ 共识"; font-weight: 600; margin-right: 6px; }
+.event .divergence::before { content: "⚠️ 分歧"; font-weight: 600; margin-right: 6px; }
+
+.sources { margin-top: 12px; font-size: 13px; }
+.sources summary { cursor: pointer; color: var(--link); user-select: none; padding: 4px 0; }
+.sources ul { list-style: none; padding-left: 0; margin-top: 6px; }
+.sources li { padding: 4px 0; border-bottom: 1px solid var(--border); }
+.sources li:last-child { border-bottom: none; }
+.sources a { color: var(--link); text-decoration: none; }
+.sources a:hover { text-decoration: underline; }
+.sources .source-name { font-weight: 600; }
+.sources .time { color: var(--muted); font-size: 12px; margin-left: 6px; }
+
+.footer {
+  margin-top: 32px; padding: 16px 0; text-align: center;
+  color: var(--muted); font-size: 12px; border-top: 1px solid var(--border);
+}
+.footer a { color: var(--link); text-decoration: none; }
+
+@media (max-width: 480px) {
+  .container { padding: 12px; }
+  .header h1 { font-size: 20px; }
+  .event { padding: 14px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🌍 国际新闻日报</h1>
+<div class="meta">2026-10-09 · 自动生成 · 共 70 条抓取 · 5 个事件 · 0 个多源验证</div>
+</div>
+<div class="stats">
+<div class="stat-card"><div class="num">5</div><div class="label">事件总数</div></div>
+<div class="stat-card"><div class="num">0</div><div class="label">多源验证</div></div>
+<div class="stat-card"><div class="num">70</div><div class="label">抓取条目</div></div>
+<div class="stat-card"><div class="num">22</div><div class="label">数据源</div></div>
+</div>
+<div class="section-title">📌 今日重点</div>
+<article class="event single">
+<h3>Suspect linked to Monaco bomb attack on millionaire speaks to BBC from Ukrainian prison</h3>
+<div class="badges">
+<span class="badge cat-国际">国际</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="core">🎯 Vitalii Zhykovych gives his own account of the attempted assassination of Ukrainian-born businessman Vadym Yermolayev.</div>
+<div class="summary">Vitalii Zhykovych gives his own account of the attempted assassination of Ukrainian-born businessman Vadym Yermolayev.</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://www.bbc.co.uk/news/articles/ckgel9044vqeo?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener"><span class="source-name">BBC World</span></a><span class="time">10-08 23:11</span></li>
+</ul>
+</details>
+</article>
+<article class="event single">
+<h3>Christa Pike now walking after failed US execution, lawyer tells BBC</h3>
+<div class="badges">
+<span class="badge cat-国际">国际</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="core">🎯 A lawyer says the murderer of Colleen Slemmer is moving around her hospital room after surviving two lethal injections.</div>
+<div class="summary">A lawyer says the murderer of Colleen Slemmer is moving around her hospital room after surviving two lethal injections.</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://www.bbc.co.uk/news/articles/c60rln74yzvxo?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener"><span class="source-name">BBC World</span></a><span class="time">10-08 15:02</span></li>
+</ul>
+</details>
+</article>
+<article class="event single">
+<h3>Adidas sues Australian label White Fox over four stripes design</h3>
+<div class="badges">
+<span class="badge cat-国际">国际</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="core">🎯 The German sportswear brand wants the Sydney-based label to stop selling the clothes and pay damages.</div>
+<div class="summary">The German sportswear brand wants the Sydney-based label to stop selling the clothes and pay damages.</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://www.bbc.co.uk/news/articles/c9e8ld448km8o?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener"><span class="source-name">BBC World</span></a><span class="time">10-08 18:17</span></li>
+</ul>
+</details>
+</article>
+<article class="event single">
+<h3>Is Trump losing the rust belt?</h3>
+<div class="badges">
+<span class="badge cat-金融">金融</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="core">🎯 Donald Trump’s Republicans try to hold their gains in America’s industrial heartland</div>
+<div class="summary">Donald Trump’s Republicans try to hold their gains in America’s industrial heartland</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://www.ft.com/content/e86d2bf9-100f-4722-b845-c3b46d94866b?syn-25a6b1a6=1" target="_blank" rel="noopener"><span class="source-name">FT</span></a><span class="time">10-08 04:00</span></li>
+</ul>
+</details>
+</article>
+<article class="event single">
+<h3>Federal Reserve Board announces enforcement action against American Express Company to address, among other things, the firm’s failure to sufficiently detect and report certain suspicious activity related to money laundering</h3>
+<div class="badges">
+<span class="badge cat-金融">金融</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="core">🎯 Federal Reserve Board announces enforcement action against American Express Company to address, among other things, the firm’s failure to sufficiently detect and report certain suspicious activity related to money laundering</div>
+<div class="summary">Federal Reserve Board announces enforcement action against American Express Company to address, among other things, the firm’s failure to sufficiently detect and report certain suspicious activity related to money laundering</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://www.federalreserve.gov/newsevents/pressreleases/enforcement20261008a.htm" target="_blank" rel="noopener"><span class="source-name">Federal Reserve</span></a><span class="time">10-08 20:30</span></li>
+</ul>
+</details>
+</article>
+<div class="section-title">🌐 国际（3 条）</div>
+<article class="event single">
+<h3>Suspect linked to Monaco bomb attack on millionaire speaks to BBC from Ukrainian prison</h3>
+<div class="badges">
+<span class="badge cat-国际">国际</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="summary">Vitalii Zhykovych gives his own account of the attempted assassination of Ukrainian-born businessman...</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://www.bbc.co.uk/news/articles/ckgel9044vqeo?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener"><span class="source-name">BBC World</span></a><span class="time">10-08 23:11</span></li>
+</ul>
+</details>
+</article>
+<article class="event single">
+<h3>Christa Pike now walking after failed US execution, lawyer tells BBC</h3>
+<div class="badges">
+<span class="badge cat-国际">国际</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="summary">A lawyer says the murderer of Colleen Slemmer is moving around her hospital room after surviving two...</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://www.bbc.co.uk/news/articles/c60rln74yzvxo?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener"><span class="source-name">BBC World</span></a><span class="time">10-08 15:02</span></li>
+</ul>
+</details>
+</article>
+<article class="event single">
+<h3>Adidas sues Australian label White Fox over four stripes design</h3>
+<div class="badges">
+<span class="badge cat-国际">国际</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="summary">The German sportswear brand wants the Sydney-based label to stop selling the clothes and pay damages...</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://www.bbc.co.uk/news/articles/c9e8ld448km8o?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener"><span class="source-name">BBC World</span></a><span class="time">10-08 18:17</span></li>
+</ul>
+</details>
+</article>
+<div class="section-title">💰 金融（2 条）</div>
+<article class="event single">
+<h3>Is Trump losing the rust belt?</h3>
+<div class="badges">
+<span class="badge cat-金融">金融</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="summary">Donald Trump’s Republicans try to hold their gains in America’s industrial heartland</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://www.ft.com/content/e86d2bf9-100f-4722-b845-c3b46d94866b?syn-25a6b1a6=1" target="_blank" rel="noopener"><span class="source-name">FT</span></a><span class="time">10-08 04:00</span></li>
+</ul>
+</details>
+</article>
+<article class="event single">
+<h3>Federal Reserve Board announces enforcement action against American Express Company to address, among other things, the firm’s failure to sufficiently detect and report certain suspicious activity related to money laundering</h3>
+<div class="badges">
+<span class="badge cat-金融">金融</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="summary">Federal Reserve Board announces enforcement action against American Express Company to address, amon...</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://www.federalreserve.gov/newsevents/pressreleases/enforcement20261008a.htm" target="_blank" rel="noopener"><span class="source-name">Federal Reserve</span></a><span class="time">10-08 20:30</span></li>
+</ul>
+</details>
+</article>
+<div class="footer">
+<div>📡 数据来源: 404 Media, AP News, Al Jazeera, BBC World, Bellingcat, Bloomberg, FT, Federal Reserve, Nikkei Asia, Our World in Data, Politico, ProPublica, Rest of World, Reuters, Reuters Business, Reuters World, SEC EDGAR, Semafor, TechCrunch, The Economist, The Information, WSJ World</div>
+<div style="margin-top:8px">
+<a href="index.html">← 返回首页</a> · 
+由 AI 自动生成，仅供参考
+</div></div>
+</div>
+</body></html>
