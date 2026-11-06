@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0071e3">
+<title>国际新闻日报 — 2026-11-06</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #f5f5f7; --card: #ffffff; --text: #1d1d1f; --muted: #6e6e73;
+  --border: #e5e5ea; --accent: #0071e3; --link: #0071e3;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #000000; --card: #1c1c1e; --text: #f5f5f7; --muted: #98989d;
+    --border: #38383a; --accent: #0a84ff; --link: #64d2ff;
+  }
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+               "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: var(--bg); color: var(--text); line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.container { max-width: 720px; margin: 0 auto; padding: 16px; }
+.header {
+  position: sticky; top: 0; background: var(--bg); padding: 16px 0;
+  border-bottom: 1px solid var(--border); z-index: 10;
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+}
+.header h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+.header .meta { font-size: 13px; color: var(--muted); }
+.stats {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;
+  margin: 16px 0;
+}
+.stat-card {
+  background: var(--card); padding: 12px; border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.stat-card .num { font-size: 24px; font-weight: 700; color: var(--accent); }
+.stat-card .label { font-size: 12px; color: var(--muted); }
+
+.section-title {
+  font-size: 18px; font-weight: 700; margin: 24px 0 12px;
+  padding-left: 8px; border-left: 4px solid var(--accent);
+}
+
+.event {
+  background: var(--card); border-radius: 16px; padding: 16px;
+  margin-bottom: 12px; border: 1px solid var(--border);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+.event.verified { border-left: 4px solid #34c759; }
+.event.single { border-left: 4px solid var(--muted); }
+.event.importance-high { border-left-color: #ff3b30; }
+
+.event h3 {
+  font-size: 17px; font-weight: 600; margin-bottom: 8px;
+  line-height: 1.4;
+}
+.event .badges {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px;
+  font-size: 12px;
+}
+.badge {
+  display: inline-block; padding: 2px 8px; border-radius: 8px;
+  background: var(--border); color: var(--muted);
+}
+.badge.cat-国际 { background: #e3f2fd; color: #1565c0; }
+.badge.cat-政治 { background: #fce4ec; color: #c2185b; }
+.badge.cat-经济 { background: #fff3e0; color: #e65100; }
+.badge.cat-金融 { background: #e8f5e9; color: #2e7d32; }
+.badge.cat-科技 { background: #ede7f6; color: #4527a0; }
+.badge.cat-社会 { background: #fff8e1; color: #f57f17; }
+.badge.cat-环境 { background: #e0f2f1; color: #00695c; }
+.badge.verified { background: #e8f5e9; color: #2e7d32; }
+.badge.single { background: #f5f5f5; color: #6e6e73; }
+.badge.imp-high { background: #ffebee; color: #c62828; }
+
+@media (prefers-color-scheme: dark) {
+  .badge.cat-国际 { background: #1a3a5c; color: #90caf9; }
+  .badge.cat-政治 { background: #5c1a3a; color: #f48fb1; }
+  .badge.cat-经济 { background: #5c3a1a; color: #ffb74d; }
+  .badge.cat-金融 { background: #1a5c2e; color: #81c784; }
+  .badge.cat-科技 { background: #3a1a5c; color: #b39ddb; }
+  .badge.cat-社会 { background: #5c4a1a; color: #ffd54f; }
+  .badge.cat-环境 { background: #1a5c52; color: #4db6ac; }
+  .badge.verified { background: #1a3a1a; color: #81c784; }
+  .badge.single { background: #2c2c2e; color: #98989d; }
+  .badge.imp-high { background: #3a1a1a; color: #ef9a9a; }
+}
+
+.event .core {
+  background: var(--bg); padding: 10px 12px; border-radius: 8px;
+  margin: 10px 0; font-size: 14px; font-weight: 500;
+}
+.event .summary { font-size: 14px; margin: 10px 0; color: var(--text); }
+.event .consensus, .event .divergence {
+  font-size: 13px; margin: 6px 0; padding: 8px 10px; border-radius: 6px;
+}
+.event .consensus { background: rgba(52, 199, 89, 0.1); }
+.event .divergence { background: rgba(255, 149, 0, 0.1); }
+.event .consensus::before { content: "✅ 共识"; font-weight: 600; margin-right: 6px; }
+.event .divergence::before { content: "⚠️ 分歧"; font-weight: 600; margin-right: 6px; }
+
+.sources { margin-top: 12px; font-size: 13px; }
+.sources summary { cursor: pointer; color: var(--link); user-select: none; padding: 4px 0; }
+.sources ul { list-style: none; padding-left: 0; margin-top: 6px; }
+.sources li { padding: 4px 0; border-bottom: 1px solid var(--border); }
+.sources li:last-child { border-bottom: none; }
+.sources a { color: var(--link); text-decoration: none; }
+.sources a:hover { text-decoration: underline; }
+.sources .source-name { font-weight: 600; }
+.sources .time { color: var(--muted); font-size: 12px; margin-left: 6px; }
+
+.footer {
+  margin-top: 32px; padding: 16px 0; text-align: center;
+  color: var(--muted); font-size: 12px; border-top: 1px solid var(--border);
+}
+.footer a { color: var(--link); text-decoration: none; }
+
+@media (max-width: 480px) {
+  .container { padding: 12px; }
+  .header h1 { font-size: 20px; }
+  .event { padding: 14px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🌍 国际新闻日报</h1>
+<div class="meta">2026-11-06 · 自动生成 · 共 78 条抓取 · 8 个事件 · 0 个多源验证</div>
+</div>
+<div class="stats">
+<div class="stat-card"><div class="num">8</div><div class="label">事件总数</div></div>
+<div class="stat-card"><div class="num">0</div><div class="label">多源验证</div></div>
+<div class="stat-card"><div class="num">78</div><div class="label">抓取条目</div></div>
+<div class="stat-card"><div class="num">22</div><div class="label">数据源</div></div>
+</div>
+<div class="section-title">📌 今日重点</div>
+<article class="event single">
+<h3>Global tech stocks plunge as US midterms add to AI slowdown fears</h3>
+<div class="badges">
+<span class="badge cat-国际">国际</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="core">🎯 Investors have reacted to possible tougher scrutiny of data centre construction and the AI industry.</div>
+<div class="summary">Investors have reacted to possible tougher scrutiny of data centre construction and the AI industry.</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://www.bbc.co.uk/news/articles/cmn04705rd8jo?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener"><span class="source-name">BBC World</span></a><span class="time">11-06 02:57</span></li>
+</ul>
+</details>
+</article>
+<article class="event single">
+<h3>Pope begins lengthy trip to Latin America weeks after lung cancer surgery</h3>
+<div class="badges">
+<span class="badge cat-国际">国际</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="core">🎯 Pope Leo, who had part of a lung removed last month, will visit Uruguay, Argentina and Peru.</div>
+<div class="summary">Pope Leo, who had part of a lung removed last month, will visit Uruguay, Argentina and Peru.</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://www.bbc.co.uk/news/articles/cqn06j0y61k6o?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener"><span class="source-name">BBC World</span></a><span class="time">11-06 00:02</span></li>
+</ul>
+</details>
+</article>
+<article class="event single">
+<h3>Asian tech stocks sink</h3>
+<div class="badges">
+<span class="badge cat-金融">金融</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="core">🎯 ‘Complete carnage’ as Nikkei 225 falls below 60,000 points for first time since May with Seoul’s Kospi under 5,000 points</div>
+<div class="summary">‘Complete carnage’ as Nikkei 225 falls below 60,000 points for first time since May with Seoul’s Kospi under 5,000 points</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://www.ft.com/content/b77ebe43-a017-4e63-af84-5bdec8f47648?syn-25a6b1a6=1" target="_blank" rel="noopener"><span class="source-name">FT</span></a><span class="time">11-06 02:30</span></li>
+</ul>
+</details>
+</article>
+<article class="event single">
+<h3>Morning in America, twilight in the markets</h3>
+<div class="badges">
+<span class="badge cat-金融">金融</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="core">🎯 Astonishing midterm election results will not repeal the turn of business and financial cycles</div>
+<div class="summary">Astonishing midterm election results will not repeal the turn of business and financial cycles</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://www.ft.com/content/d21e2a87-191b-447d-b81b-edcf7bc2f007" target="_blank" rel="noopener"><span class="source-name">FT</span></a><span class="time">11-05 05:00</span></li>
+</ul>
+</details>
+</article>
+<article class="event single">
+<h3>Taiwan’s Currency Weakens Past 33 Per US Dollar on AI Jitters</h3>
+<div class="badges">
+<span class="badge cat-金融">金融</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="core">🎯 The Taiwan dollar weakened past the key psychological level of 33 per US dollar for the first time since April 2025, as a broad retreat in artificial intelligence shares weighed on the island’s tech-heavy equity market.</div>
+<div class="summary">The Taiwan dollar weakened past the key psychological level of 33 per US dollar for the first time since April 2025, as a broad retreat in artificial intelligence shares weighed on the island’s tech-heavy equity market.</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://www.bloomberg.com/news/articles/2026-11-06/taiwan-s-currency-weakens-past-33-per-us-dollar-on-ai-jitters" target="_blank" rel="noopener"><span class="source-name">Bloomberg</span></a><span class="time">11-06 01:15</span></li>
+</ul>
+</details>
+</article>
+<article class="event single">
+<h3>Federal Reserve Board announces termination of enforcement action with Allegiant United Holdings, LLC, Nano Financial Holdings, Inc., and Nano Banc</h3>
+<div class="badges">
+<span class="badge cat-金融">金融</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="core">🎯 Federal Reserve Board announces termination of enforcement action with Allegiant United Holdings, LLC, Nano Financial Holdings, Inc., and Nano Banc</div>
+<div class="summary">Federal Reserve Board announces termination of enforcement action with Allegiant United Holdings, LLC, Nano Financial Holdings, Inc., and Nano Banc</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://www.federalreserve.gov/newsevents/pressreleases/enforcement20261105a.htm" target="_blank" rel="noopener"><span class="source-name">Federal Reserve</span></a><span class="time">11-05 16:00</span></li>
+</ul>
+</details>
+</article>
+<article class="event single">
+<h3>US government warns of ‘ongoing cyber threat’ amid mass hacks of industrial retail and military freezers</h3>
+<div class="badges">
+<span class="badge cat-科技">科技</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="core">🎯 A joint U.S. government statement says the hacks are affecting the food, transportation, and healthcare industries after reports of global mass hacks.</div>
+<div class="summary">A joint U.S. government statement says the hacks are affecting the food, transportation, and healthcare industries after reports of global mass hacks.</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://techcrunch.com/2026/11/05/u-s-government-warns-of-ongoing-cyber-threat-amid-mass-hacks-of-industrial-retail-and-military-freezers/" target="_blank" rel="noopener"><span class="source-name">TechCrunch</span></a><span class="time">11-05 18:48</span></li>
+</ul>
+</details>
+</article>
+<article class="event single">
+<h3>Lyft Growth Slows to 8% in Q3</h3>
+<div class="badges">
+<span class="badge cat-科技">科技</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="core">🎯 Lyft’s revenue growth slowed sharply in the third quarter to 8%, while gross bookings growth also slowed to 17% from 23% in the second quarter. The company projected a further slowdown in gross bookings growth, ot etween 13% and 17%, in the fourth quarter. Despite the slowdown, Lyft CEO David ...</div>
+<div class="summary">Lyft’s revenue growth slowed sharply in the third quarter to 8%, while gross bookings growth also slowed to 17% from 23% in the second quarter. The company projected a further slowdown in gross bookings growth, ot etween 13% and 17%, in the fourth quarter. Despite the slowdown, Lyft CEO David ...</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://www.theinformation.com/briefings/lyft-growth-slows-8-q3" target="_blank" rel="noopener"><span class="source-name">The Information</span></a><span class="time">11-05 22:00</span></li>
+</ul>
+</details>
+</article>
+<div class="section-title">🌐 国际（2 条）</div>
+<article class="event single">
+<h3>Global tech stocks plunge as US midterms add to AI slowdown fears</h3>
+<div class="badges">
+<span class="badge cat-国际">国际</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="summary">Investors have reacted to possible tougher scrutiny of data centre construction and the AI industry.</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://www.bbc.co.uk/news/articles/cmn04705rd8jo?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener"><span class="source-name">BBC World</span></a><span class="time">11-06 02:57</span></li>
+</ul>
+</details>
+</article>
+<article class="event single">
+<h3>Pope begins lengthy trip to Latin America weeks after lung cancer surgery</h3>
+<div class="badges">
+<span class="badge cat-国际">国际</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="summary">Pope Leo, who had part of a lung removed last month, will visit Uruguay, Argentina and Peru.</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://www.bbc.co.uk/news/articles/cqn06j0y61k6o?at_medium=RSS&amp;at_campaign=rss" target="_blank" rel="noopener"><span class="source-name">BBC World</span></a><span class="time">11-06 00:02</span></li>
+</ul>
+</details>
+</article>
+<div class="section-title">💰 金融（4 条）</div>
+<article class="event single">
+<h3>Asian tech stocks sink</h3>
+<div class="badges">
+<span class="badge cat-金融">金融</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="summary">‘Complete carnage’ as Nikkei 225 falls below 60,000 points for first time since May with Seoul’s Kos...</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://www.ft.com/content/b77ebe43-a017-4e63-af84-5bdec8f47648?syn-25a6b1a6=1" target="_blank" rel="noopener"><span class="source-name">FT</span></a><span class="time">11-06 02:30</span></li>
+</ul>
+</details>
+</article>
+<article class="event single">
+<h3>Morning in America, twilight in the markets</h3>
+<div class="badges">
+<span class="badge cat-金融">金融</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="summary">Astonishing midterm election results will not repeal the turn of business and financial cycles</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://www.ft.com/content/d21e2a87-191b-447d-b81b-edcf7bc2f007" target="_blank" rel="noopener"><span class="source-name">FT</span></a><span class="time">11-05 05:00</span></li>
+</ul>
+</details>
+</article>
+<article class="event single">
+<h3>Taiwan’s Currency Weakens Past 33 Per US Dollar on AI Jitters</h3>
+<div class="badges">
+<span class="badge cat-金融">金融</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="summary">The Taiwan dollar weakened past the key psychological level of 33 per US dollar for the first time s...</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://www.bloomberg.com/news/articles/2026-11-06/taiwan-s-currency-weakens-past-33-per-us-dollar-on-ai-jitters" target="_blank" rel="noopener"><span class="source-name">Bloomberg</span></a><span class="time">11-06 01:15</span></li>
+</ul>
+</details>
+</article>
+<article class="event single">
+<h3>Federal Reserve Board announces termination of enforcement action with Allegiant United Holdings, LLC, Nano Financial Holdings, Inc., and Nano Banc</h3>
+<div class="badges">
+<span class="badge cat-金融">金融</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="summary">Federal Reserve Board announces termination of enforcement action with Allegiant United Holdings, LL...</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://www.federalreserve.gov/newsevents/pressreleases/enforcement20261105a.htm" target="_blank" rel="noopener"><span class="source-name">Federal Reserve</span></a><span class="time">11-05 16:00</span></li>
+</ul>
+</details>
+</article>
+<div class="section-title">🔬 科技（2 条）</div>
+<article class="event single">
+<h3>US government warns of ‘ongoing cyber threat’ amid mass hacks of industrial retail and military freezers</h3>
+<div class="badges">
+<span class="badge cat-科技">科技</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="summary">A joint U.S. government statement says the hacks are affecting the food, transportation, and healthc...</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://techcrunch.com/2026/11/05/u-s-government-warns-of-ongoing-cyber-threat-amid-mass-hacks-of-industrial-retail-and-military-freezers/" target="_blank" rel="noopener"><span class="source-name">TechCrunch</span></a><span class="time">11-05 18:48</span></li>
+</ul>
+</details>
+</article>
+<article class="event single">
+<h3>Lyft Growth Slows to 8% in Q3</h3>
+<div class="badges">
+<span class="badge cat-科技">科技</span>
+<span class="badge single">📄 单源</span>
+</div>
+<div class="summary">Lyft’s revenue growth slowed sharply in the third quarter to 8%, while gross bookings growth also sl...</div>
+<details class="sources">
+<summary>🔗 1 个来源</summary>
+<ul>
+<li><a href="https://www.theinformation.com/briefings/lyft-growth-slows-8-q3" target="_blank" rel="noopener"><span class="source-name">The Information</span></a><span class="time">11-05 22:00</span></li>
+</ul>
+</details>
+</article>
+<div class="footer">
+<div>📡 数据来源: 404 Media, AP News, Al Jazeera, BBC World, Bellingcat, Bloomberg, FT, Federal Reserve, Nikkei Asia, Our World in Data, Politico, ProPublica, Rest of World, Reuters, Reuters Business, Reuters World, SEC EDGAR, Semafor, TechCrunch, The Economist, The Information, WSJ World</div>
+<div style="margin-top:8px">
+<a href="index.html">← 返回首页</a> · 
+由 AI 自动生成，仅供参考
+</div></div>
+</div>
+</body></html>
